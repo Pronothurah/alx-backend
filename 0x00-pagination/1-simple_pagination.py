@@ -2,7 +2,7 @@
 """Task 1 Module"""
 
 import csv
-import math
+# import math
 from typing import List
 
 def index_range(page, page_size):
