@@ -5,6 +5,7 @@ import csv
 # import math
 from typing import List
 
+
 def index_range(page, page_size):
     """
     Return a tuple of size two containing a start index and an end index
@@ -40,8 +41,10 @@ class Server:
     def get_page(self, page: int = 1, page_size: int = 10) -> List[List]:
         """Retrieves a page of data resource.
         """
-        assert isinstance(page, int) and page > 0, "Page must be a positive integer."
-        assert isinstance(page_size, int) and page_size > 0, "Page size must be a positive integer."
+        assert isinstance(page, int) and \
+            page > 0, "Page must be a positive integer."
+        assert isinstance(page_size, int) and \
+            page_size > 0, "Page size must be a positive integer."
 
         start_index, end_index = index_range(page, page_size)
         dataset = self.dataset()
