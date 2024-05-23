@@ -2,6 +2,7 @@
 """BasicCache class module"""
 from base_caching import BaseCaching
 
+
 class BasicCache(BaseCaching):
     """inherits from BaseCaching and is a caching system"""
     def put(self, key, item):
