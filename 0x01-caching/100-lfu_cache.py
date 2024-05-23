@@ -26,10 +26,11 @@ class LFUCache(LRUCache):
             if len(self.cache_data) >= BaseCaching.MAX_ITEMS:
                 # Find the least frequently used key
                 min_freq = min(self.usage_frequency.values())
-                lfu_keys = [k for k, v in self.usage_frequency.items() if v == min_freq]
+                lfu_keys = [k for k, v in self.usage_frequency.items()
+                            if v == min_freq]
 
                 if len(lfu_keys) > 1:
-                    # Find the least recently used key among the least frequently used keys
+                    # Find the least recently used key
                     lru_key = min(lfu_keys, key=lambda k: self.usage_order[k])
                 else:
                     lru_key = lfu_keys[0]
@@ -55,6 +56,7 @@ class LFUCache(LRUCache):
         return self.cache_data[key]
 
     def _current_time(self):
-        """ Return the current time in milliseconds to ensure unique ordering """
+        """ Return the current time in
+        milliseconds to ensure unique ordering """
         from time import time
         return int(time() * 1000)
