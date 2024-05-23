@@ -27,7 +27,8 @@ class LFUCache(LRUCache):
             if len(self.cache_data) > BaseCaching.MAX_ITEMS:
                 # Find the least frequently used items
                 min_freq = min(self.frequency.values())
-                lfu_keys = [k for k, v in self.frequency.items() if v == min_freq]
+                lfu_keys = [k for k, v in self.frequency.items()
+                            if v == min_freq]
 
                 if len(lfu_keys) > 1:
                     for k in self.order:
