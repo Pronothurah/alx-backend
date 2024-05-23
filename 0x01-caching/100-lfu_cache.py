@@ -11,39 +11,50 @@ class LFUCache(LRUCache):
     def __init__(self):
         """ Initialize the class """
         super().__init__()
-        self.frequency = {}
+        self.usage_frequency = {}
+        self.usage_order = {}
 
     def put(self, key, item):
         """ Add an item in the cache """
-        if key is not None and item is not None:
-            if key in self.cache_data:
-                self.frequency[key] += 1
-            else:
-                self.frequency[key] = 1
+        if key is None or item is None:
+            return
 
-            # Call LRU put method to manage the cache and order list
-            super().put(key, item)
-
-            if len(self.cache_data) > BaseCaching.MAX_ITEMS:
-                # Find the least frequently used items
-                min_freq = min(self.frequency.values())
-                lfu_keys = [k for k, v in self.frequency.items()
-                            if v == min_freq]
+        if key in self.cache_data:
+            self.cache_data[key] = item
+            self.usage_frequency[key] += 1
+        else:
+            if len(self.cache_data) >= BaseCaching.MAX_ITEMS:
+                # Find the least frequently used key
+                min_freq = min(self.usage_frequency.values())
+                lfu_keys = [k for k, v in self.usage_frequency.items() if v == min_freq]
 
                 if len(lfu_keys) > 1:
-                    for k in self.order:
-                        if k in lfu_keys:
-                            lfu_key = k
-                            break
+                    # Find the least recently used key among the least frequently used keys
+                    lru_key = min(lfu_keys, key=lambda k: self.usage_order[k])
                 else:
-                    lfu_key = lfu_keys[0]
+                    lru_key = lfu_keys[0]
 
-                del self.cache_data[lfu_key]
-                del self.frequency[lfu_key]
-                self.order.remove(lfu_key)
-                print(f"DISCARD: {lfu_key}")
+                del self.cache_data[lru_key]
+                del self.usage_frequency[lru_key]
+                del self.usage_order[lru_key]
+                print(f"DISCARD: {lru_key}")
+
+            self.cache_data[key] = item
+            self.usage_frequency[key] = 1
+
+        # Update the order of usage for LRU tie-breaking
+        self.usage_order[key] = self._current_time()
 
     def get(self, key):
         """ Get an item by key """
         if key is None or key not in self.cache_data:
             return None
+
+        self.usage_frequency[key] += 1
+        self.usage_order[key] = self._current_time()
+        return self.cache_data[key]
+
+    def _current_time(self):
+        """ Return the current time in milliseconds to ensure unique ordering """
+        from time import time
+        return int(time() * 1000)
