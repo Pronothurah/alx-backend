@@ -9,6 +9,7 @@ app = Flask(__name__)
 
 class Config:
     """has a LANGUAGES class attribute """
+    DEBUG = True
     LANGUAGES = ["en", "fr"]
     BABEL_DEFAULT_LOCALE = "en"
     BABEL_DEFAULT_TIMEZONE = "UTC"
@@ -35,4 +36,4 @@ def index():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run()
