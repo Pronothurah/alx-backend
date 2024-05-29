@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""task 2"""
+"""task 3"""
 
 from flask import Flask, render_template, request
 from flask_babel import Babel
@@ -29,7 +29,7 @@ def get_locale() -> str:
 @app.route('/')
 def index():
     """defines root index"""
-    return render_template('2-index.html')
+    return render_template('3-index.html')
 
 
 if __name__ == '__main__':
