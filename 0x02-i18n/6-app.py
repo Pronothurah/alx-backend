@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-""" Get locale from request """
+"""task 6"""
 from flask import Flask, g, render_template, request
 from flask_babel import Babel
 
